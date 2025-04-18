@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import compression from 'compression';
 import path from 'path';
 
 interface Options {
@@ -9,7 +10,8 @@ interface Options {
 
 export class Server {
 
-    private app = express();
+    public readonly app = express();
+    private serverListener?: any;
     private readonly port: number;
     private readonly publicPath: string;
     private readonly routes: Router;
@@ -26,6 +28,7 @@ export class Server {
         // Middlware
         this.app.use(express.json()); // raw
         this.app.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded
+        this.app.use( compression() )
 
         this.app.use(express.static(this.publicPath));
 
@@ -40,6 +43,10 @@ export class Server {
         this.app.listen(this.port, () => {
             console.log(`Server running on port ${this.port}`)
         })
+    }
+
+    public close() {
+        this.serverListener?.close();
     }
 
 }

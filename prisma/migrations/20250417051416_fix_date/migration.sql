@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "todo" ALTER COLUMN "completedAt" SET DATA TYPE TIMESTAMP;
